@@ -4,5 +4,9 @@ namespace PostGreSqlTransaction.Interfaces;
 
 public interface IAccountRepository : IBaseRepository<Account>
 {
-    IEnumerable<Account> AccountsByOwner(Guid ownerId);
+    //Task<IEnumerable<Account>> GetAccountsByUserId(Guid userId);
+
+    //Task<User> GetUserByIdAsync(Guid userId);
+    
+    Task<IEnumerable<Account>> AccountsByUser(Guid ownerId);
 }

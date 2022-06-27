@@ -1,4 +1,5 @@
-﻿using PostGreSqlTransaction.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PostGreSqlTransaction.Entities;
 using PostGreSqlTransaction.Interfaces;
 
 namespace PostGreSqlTransaction.Repositories;
@@ -9,8 +10,8 @@ public class AccountRepository : BaseRepository<Account>, IAccountRepository
     {
     }
 
-    public IEnumerable<Account> AccountsByOwner(Guid ownerId)
+    public async Task<IEnumerable<Account>> AccountsByUser(Guid ownerId)
     {
-        return FindByCondition(a => a.UserId.Equals(ownerId)).ToList();
+        return await FindByCondition(a => a.UserId.Equals(ownerId)).ToListAsync();
     }
 }

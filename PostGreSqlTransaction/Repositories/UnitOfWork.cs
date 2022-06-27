@@ -8,23 +8,23 @@ namespace PostGreSqlTransaction.Repositories
     {
         private readonly TransContext _context;
         public IUserRepository Users { get; private set; }
-        public IOrderRepository Orders { get; private set; }
+        public IAccountRepository Accounts { get; private set; }
 
         public UnitOfWork(TransContext context)
         {
             _context = context;
 
             Users = new UserRepository(_context);
-            Orders = new OrderRepository(_context);
+            Accounts = new AccountRepository(_context);
         }
 
         public UnitOfWork() : this(new TransContext())
         {
         }
 
-        public int Save()
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Dispose()

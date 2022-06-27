@@ -6,6 +6,7 @@ namespace PostGreSqlTransaction.Repositories.Contracts
     {
         IDbTransaction BeginTransaction();
         IUserRepository Users { get; }
-        IOrderRepository Orders { get; }
+        IAccountRepository Accounts { get; }
+        Task<bool> SaveAsync();
     }
 }
