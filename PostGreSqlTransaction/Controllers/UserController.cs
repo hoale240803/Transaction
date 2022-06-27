@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PostGreSqlTransaction.DTOs;
 using PostGreSqlTransaction.Entities;
 using PostGreSqlTransaction.Interfaces;
+using PostGreSqlTransaction.Repositories;
 using PostGreSqlTransaction.Repositories.Contracts;
 
 namespace PostGreSqlTransaction.Controllers
@@ -11,11 +12,11 @@ namespace PostGreSqlTransaction.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UserController(ILogger<WeatherForecastController> logger, IUserRepository userRepo, IUnitOfWork unitOfWork)
+        public UserController(ILogger logger, IUserRepository userRepo, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -49,13 +50,11 @@ namespace PostGreSqlTransaction.Controllers
                     _logger.LogError($"User with id: {id}, hasn't been found in db.");
                     return NotFound();
                 }
-                else
-                {
-                    _logger.LogInformation($"Returned user with id: {id}");
 
-                    var userResult = _mapper.Map<UserDTO>(user);
-                    return Ok(userResult);
-                }
+                _logger.LogInformation($"Returned user with id: {id}");
+
+                var userResult = _mapper.Map<UserDTO>(user);
+                return Ok(userResult);
             }
             catch (Exception ex)
             {
@@ -75,13 +74,11 @@ namespace PostGreSqlTransaction.Controllers
                     _logger.LogError($"User with id: {id}, hasn't been found in db.");
                     return NotFound();
                 }
-                else
-                {
-                    _logger.LogInformation($"Returned user with details for id: {id}");
 
-                    var userResult = _mapper.Map<UserDTO>(user);
-                    return Ok(userResult);
-                }
+                _logger.LogInformation($"Returned user with details for id: {id}");
+
+                var userResult = _mapper.Map<UserDTO>(user);
+                return Ok(userResult);
             }
             catch (Exception ex)
             {
@@ -164,6 +161,8 @@ namespace PostGreSqlTransaction.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
+            // using (var unitOfWork= new UnitOfWork())
+            using var transaction = new UnitOfWork().BeginTransaction();
             try
             {
                 var user = await _unitOfWork.Users.GetUserByIdAsync(id);
@@ -182,13 +181,16 @@ namespace PostGreSqlTransaction.Controllers
 
                 _unitOfWork.Users.DeleteUser(user);
                 await _unitOfWork.SaveAsync();
+                transaction.Commit();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside DeleteUser action: {ex.Message}");
+                transaction.Rollback();
                 return StatusCode(500, "Internal server error");
+                   
             }
         }
     }

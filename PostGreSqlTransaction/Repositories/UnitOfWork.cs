@@ -10,7 +10,7 @@ namespace PostGreSqlTransaction.Repositories
         public IUserRepository Users { get; private set; }
         public IAccountRepository Accounts { get; private set; }
 
-        public UnitOfWork(TransContext context)
+        private UnitOfWork(TransContext context)
         {
             _context = context;
 
