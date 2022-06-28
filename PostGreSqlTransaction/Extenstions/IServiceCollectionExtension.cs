@@ -1,4 +1,8 @@
 ﻿using Microsoft.OpenApi.Models;
+using PostGreSqlTransaction.Entities;
+using PostGreSqlTransaction.Interfaces;
+using PostGreSqlTransaction.Repositories;
+using PostGreSqlTransaction.Repositories.Contracts;
 
 namespace PostGreSqlTransaction.Extenstions
 {
@@ -37,6 +41,31 @@ namespace PostGreSqlTransaction.Extenstions
                         new List<string>()
                       }
                      });
+            });
+        }
+        
+        public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
+        {
+            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            return services;
+        }
+        
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            //services.AddSingleton<ILoggerManager, LoggerManager>();
+            services.AddTransient<ILogger, Logger<User>>();
+        }
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
             });
         }
     }

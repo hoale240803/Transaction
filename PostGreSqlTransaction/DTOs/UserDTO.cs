@@ -1,4 +1,6 @@
-﻿namespace PostGreSqlTransaction.DTOs;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PostGreSqlTransaction.DTOs;
 
 public class UserDTO
 {
@@ -7,5 +9,6 @@ public class UserDTO
     public DateTime DateOfBirth { get; set; }
     public string Address { get; set; }
 
+    [NotMapped]
     public IEnumerable<AccountDTO> Accounts { get; set; }
 }

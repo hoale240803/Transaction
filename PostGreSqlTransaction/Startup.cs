@@ -1,15 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using PostGreSqlTransaction.Entities;
 using PostGreSqlTransaction.Extenstions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PostGreSqlTransaction
 {
@@ -19,15 +10,35 @@ namespace PostGreSqlTransaction
         {
             Configuration = configuration;
         }
-
+        // public Startup(IHostEnvironment env)
+        // {
+        //     var builder = new ConfigurationBuilder()
+        //         .SetBasePath(env.ContentRootPath)
+        //         .AddJsonFile("appsettings.json", false, true)
+        //         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
+        //         .AddEnvironmentVariables();
+        //     configuration = builder.Build();
+        // }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
+ 
             // add config swagger
             services.AddSwagger();
+            var connectionString = Configuration["DbContextSettings:ConnectionString"];
+            services.AddDbContext<TransContext>(
+                    opts => opts.UseNpgsql(connectionString, (options) =>
+                    {
+                        options.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), new string[] { "57P01" });
+                    })
+            );
+            services.ConfigureCors();
+            services.ConfigureLoggerService();
+            services.ConfigureRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

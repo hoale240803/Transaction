@@ -10,7 +10,7 @@ namespace PostGreSqlTransaction.Repositories
         public IUserRepository Users { get; private set; }
         public IAccountRepository Accounts { get; private set; }
 
-        private UnitOfWork(TransContext context)
+        public UnitOfWork(TransContext context)
         {
             _context = context;
 
@@ -18,9 +18,9 @@ namespace PostGreSqlTransaction.Repositories
             Accounts = new AccountRepository(_context);
         }
 
-        public UnitOfWork() : this(new TransContext())
-        {
-        }
+        //public UnitOfWork() : this(new TransContext())
+        //{
+        //}
 
         public async Task<bool> SaveAsync()
         {
