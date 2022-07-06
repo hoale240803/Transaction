@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostGreSqlTransaction", "PostGreSqlTransaction\PostGreSqlTransaction.csproj", "{314E2888-3C37-4E46-BD24-CB3255C83011}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostgreSqlUnitTest", "PostgreSqlUnitTest\PostgreSqlUnitTest.csproj", "{B1B16CA6-54C8-46EC-BEF3-B643CCDB756A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{314E2888-3C37-4E46-BD24-CB3255C83011}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{314E2888-3C37-4E46-BD24-CB3255C83011}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{314E2888-3C37-4E46-BD24-CB3255C83011}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1B16CA6-54C8-46EC-BEF3-B643CCDB756A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1B16CA6-54C8-46EC-BEF3-B643CCDB756A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1B16CA6-54C8-46EC-BEF3-B643CCDB756A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1B16CA6-54C8-46EC-BEF3-B643CCDB756A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

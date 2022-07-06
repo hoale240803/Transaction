@@ -8,7 +8,6 @@ namespace PostGreSqlTransaction.Extenstions
 {
     public static class IServiceCollectionExtension
     {
-
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             return services.AddSwaggerGen(c =>
@@ -43,7 +42,6 @@ namespace PostGreSqlTransaction.Extenstions
                      });
             });
         }
-        
         public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
         {
             

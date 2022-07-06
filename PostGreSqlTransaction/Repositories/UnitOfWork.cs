@@ -13,20 +13,30 @@ namespace PostGreSqlTransaction.Repositories
         public UnitOfWork(TransContext context)
         {
             _context = context;
-
             Users = new UserRepository(_context);
             Accounts = new AccountRepository(_context);
         }
 
-        //public UnitOfWork() : this(new TransContext())
-        //{
-        //}
+        public UnitOfWork(TransContext context,IUserRepository users, IAccountRepository accounts = null)
+        {
+            _context = context;
+            Users = users;
+            Accounts = accounts;
+        }
+        
+        public bool Save()
+        {
+            var result = _context.SaveChanges() > 0;
+
+            return result;
+        }
 
         public async Task<bool> SaveAsync()
         {
-            return await _context.SaveChangesAsync() > 0;
-        }
+            var result =await _context.SaveChangesAsync() > 0;
 
+            return result;
+        }
         public void Dispose()
         {
             _context.Dispose();

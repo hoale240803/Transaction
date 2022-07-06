@@ -6,19 +6,16 @@ namespace PostGreSqlTransaction
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+               // .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
-        // public Startup(IHostEnvironment env)
-        // {
-        //     var builder = new ConfigurationBuilder()
-        //         .SetBasePath(env.ContentRootPath)
-        //         .AddJsonFile("appsettings.json", false, true)
-        //         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
-        //         .AddEnvironmentVariables();
-        //     configuration = builder.Build();
-        // }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
